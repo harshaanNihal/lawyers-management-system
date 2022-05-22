@@ -14,16 +14,23 @@ module.exports = {
   plugins: ["react", "prettier"],
   rules: {
     "prettier/prettier": ["warn", { semi: false }],
-    "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
-    "arrow-body-style": "off",
-    "prefer-arrow-callback": "off",
-    "no-unused-vars": ["error", { vars: "local", args: "none" }],
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-props-no-spreading": "off",
+    // "arrow-body-style": "off",
+    // "prefer-arrow-callback": "off",
+    // "no-unused-vars": ["error", { vars: "local", args: "none" }],
+    "react/prop-types": "off",
   },
   settings: {
-    'import/resolver': {
+    "import/resolver": {
       alias: {
-        map: [['@', './src/']],
-        extensions: ['.js', '.jsx'],
+        map: [["@", "./src"]],
+        extensions: [".js", ".jsx"],
+      },
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+        moduleDirectory: ["node_modules", "src/"],
       },
     },
+  },
 }
