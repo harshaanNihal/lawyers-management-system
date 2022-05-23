@@ -1,4 +1,5 @@
-import { ADD_FIRM, DELETE_FIRM } from "../constants"
+import { toast } from "react-toastify"
+import { ADD_FIRM, BOOK_LAWYER_SLOTS, DELETE_FIRM } from "../constants"
 
 export const addFirm =
   (firm, cb = () => {}) =>
@@ -7,6 +8,7 @@ export const addFirm =
       type: ADD_FIRM,
       payload: firm,
     })
+    toast.success("Firm added successfully")
     cb()
   }
 
@@ -14,4 +16,14 @@ export const deleteFirm = (firmId) => (dispatch) =>
   dispatch({
     type: DELETE_FIRM,
     payload: { id: firmId },
+  })
+
+export const bookLawyerSlots = (firmId, lawyerId, newLawyer) => (dispatch) =>
+  dispatch({
+    type: BOOK_LAWYER_SLOTS,
+    payload: {
+      firmId,
+      lawyerId,
+      newLawyer,
+    },
   })

@@ -13,9 +13,9 @@
     "format": "npm run prettier:fix && npm run lint:fix"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
     "antd": "^4.20.5",
     "formik": "^2.2.9",
+    "ramda": "^0.28.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.1",

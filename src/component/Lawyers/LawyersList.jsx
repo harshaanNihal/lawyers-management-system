@@ -1,16 +1,24 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Layout, Breadcrumb, Card } from "antd"
 import { useSelector } from "react-redux"
-import "./FirmsList.css"
+// import "./FirmsList.css"
 import { PlusSquareOutlined } from "@ant-design/icons"
-import { toast } from "react-toastify"
-import FirmCard from "./FirmCard"
-import FirmCreate from "./FirmCreate"
+import { useParams } from "react-router-dom"
+import LawyersTable from "./LawyersTable"
 
 const { Content } = Layout
 
-function FirmsList() {
-  const [drawerVisible, setdrawerVisible] = React.useState(false) // drawer to create firm
+function LawyersList() {
+  const { firmId } = useParams()
+  const firms = useSelector((state) => state)
+  const [drawerVisible, setdrawerVisible] = React.useState(false) // drawer to create lawyers
+  const [firmName, setFirmName] = React.useState("")
+  const getFirm = (id) => firms.find((firm) => firm.id === id)
+
+  useEffect(() => {
+    const lawyersData = getFirm(firmId)
+    setFirmName(lawyersData.name)
+  }, [firmId, firms])
 
   const showDrawer = () => {
     setdrawerVisible(true)
@@ -20,19 +28,16 @@ function FirmsList() {
     setdrawerVisible(false)
   }
 
-  const firms = useSelector((state) => state)
-
   return (
     <Content className="content site-drawer-render-in-current-wrapper">
       <Breadcrumb style={{ margin: "16px 0" }}>
-        <Breadcrumb.Item>Home</Breadcrumb.Item>
+        <Breadcrumb.Item>Firms</Breadcrumb.Item>
+        <Breadcrumb.Item>{firmName}</Breadcrumb.Item>
       </Breadcrumb>
       <div className="site-layout-content">
-        <h1>Firms List</h1>
-        <div className="firms-list">
-          {firms.map((firm) => (
-            <FirmCard firm={firm} key={firm.id} />
-          ))}
+        <h1>Lawyers List</h1>
+        <div className="lawyers-list">
+          <LawyersTable />
           <Card
             hoverable
             onClick={showDrawer}
@@ -48,9 +53,9 @@ function FirmsList() {
         </div>
       </div>
 
-      <FirmCreate onClose={onClose} drawerVisible={drawerVisible} />
+      {/* <FirmCreate onClose={onClose} drawerVisible={drawerVisible} /> */}
     </Content>
   )
 }
 
-export default FirmsList
+export default LawyersList

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { DeleteFilled } from "@ant-design/icons"
 import { deleteFirm } from "@/redux/actions"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 const { Meta } = Card
 
@@ -14,6 +15,7 @@ function FirmCard({ firm }) {
 
   const handleDelete = () => {
     dispatch(deleteFirm(firm.id))
+    toast.success("Firm deleted successfully")
   }
 
   const handleClick = () => {
@@ -22,12 +24,15 @@ function FirmCard({ firm }) {
 
   return (
     <Card
-      onClick={handleClick}
       hoverable
       style={{ width: 300, marginTop: 16 }}
       actions={[<DeleteFilled onClick={handleDelete} key="delete" />]}
     >
-      <Meta title={firm.name} description={firm.description} />
+      <Meta
+        onClick={handleClick}
+        title={firm.name}
+        description={firm.description}
+      />
     </Card>
   )
 }
