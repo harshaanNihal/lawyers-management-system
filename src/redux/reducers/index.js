@@ -1,8 +1,16 @@
+import {
+  formatLawyersData,
+  getIndexFromId,
+  toggleSlot,
+} from "@/component/utils"
 import * as R from "ramda"
 import { v4 as uuidv4 } from "uuid"
-import { ADD_FIRM, BOOK_LAWYER_SLOTS, DELETE_FIRM } from "../constants"
-
-const getIndexFromId = (arr, id) => arr.findIndex((v) => v.id === id)
+import {
+  ADD_FIRM,
+  BOOK_LAWYER_SLOTS,
+  DELETE_FIRM,
+  FORMAT_DATA,
+} from "../constants"
 
 const getBaseFirmData = (firmData) => ({
   id: uuidv4(),
@@ -15,17 +23,37 @@ const updateLawerInFirm = (state, payload) => {
   const cloneState = R.clone(state)
   const firmIndex = getIndexFromId(cloneState, payload.firmId)
 
-  const LawyerIndex = getIndexFromId(
-    cloneState[firmIndex].lawyers,
-    payload.lawyerId
+  const cloneFirm = R.clone(cloneState[firmIndex])
+  const cloneLawyers = R.clone(cloneFirm.lawyers)
+
+  const LawyerIndex = getIndexFromId(cloneLawyers, payload.lawyerId)
+
+  const cloneLawyer = R.clone(cloneLawyers[LawyerIndex])
+
+  cloneLawyers[LawyerIndex].slots = toggleSlot(
+    cloneLawyer,
+    payload.selectedSlot.id,
+    true
   )
 
-  const lawyersClone = R.clone(cloneState[firmIndex].lawyers)
+  cloneState[firmIndex] = { ...cloneFirm, lawyers: cloneLawyers }
 
-  lawyersClone[LawyerIndex] = R.clone(payload.newLawyer)
+  return cloneState
+}
 
-  cloneState[firmIndex].lawyers = lawyersClone
+const formatFirmData = (state, firmId) => {
+  const cloneState = R.clone(state)
+  const firmIndex = getIndexFromId(cloneState, firmId)
+  let cloneFirm = R.clone(cloneState[firmIndex])
 
+  if (cloneFirm.formattedData) return cloneState
+
+  const lawyers = R.clone(cloneFirm.lawyers)
+
+  const formattedLawyers = formatLawyersData(lawyers)
+
+  cloneFirm = { ...cloneFirm, lawyers: formattedLawyers, formattedData: true }
+  cloneState[firmIndex] = cloneFirm
   return cloneState
 }
 
@@ -59,6 +87,7 @@ const initialFirmData = [
     name: "Firm-Title",
     description: "firm Description",
     lawyers: initialLawyerData,
+    formattedData: false,
   },
 ]
 
@@ -70,6 +99,8 @@ const rootReducer = (state = initialFirmData, action = {}) => {
       return state.filter((firm) => firm.id !== action.payload.id)
     case BOOK_LAWYER_SLOTS:
       return updateLawerInFirm(state, action.payload)
+    case FORMAT_DATA:
+      return formatFirmData(state, action.payload.firmId)
     default:
       return state
   }
