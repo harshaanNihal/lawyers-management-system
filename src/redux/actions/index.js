@@ -20,7 +20,6 @@ export const addFirm =
 export const addLawyer =
   (firmId, lawyer, cb = () => {}) =>
   (dispatch) => {
-    console.log("inside")
     dispatch({
       type: ADD_LAWYER,
       payload: { lawyer, firmId },

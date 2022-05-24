@@ -18,7 +18,7 @@ function SlotsBooking({ lawyer, onBook, onClose, visible }) {
 
   return (
     <Drawer
-      title="Create Firm"
+      title="Slots Booking"
       placement="right"
       closable={false}
       size="large"

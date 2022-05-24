@@ -39,8 +39,11 @@ function LawyersList() {
       </Breadcrumb>
       <div className="site-layout-content">
         <h1>Lawyers List</h1>
-        <div style={{ float: 'right' }}>
-          <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>{" "}Add Lawyer</Button>
+        <div style={{ float: "right" }}>
+          <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
+            {" "}
+            Add Lawyer
+          </Button>
         </div>
         <div className="lawyers-list">
           <LawyersTable />
