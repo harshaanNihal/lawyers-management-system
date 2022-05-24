@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link, useParams } from "react-router-dom"
 import { BOOK_LAWYER_SLOTS, FORMAT_DATA } from "@/redux/constants"
 import { formatSingleLawyerData, getDataFromId } from "../../utils"
-import SlotsBooking from "../LawyersList/SlotsBooking"
+import SlotsBooking from "./SlotsBooking"
 
 const { Content } = Layout
 
@@ -61,13 +61,10 @@ function LawyerDetails() {
         <Breadcrumb.Item>
           <Link to="/">Firms</Link>
         </Breadcrumb.Item>
-        <Breadcrumb.Item><Link to={`/firms/${firm.id}`}>
-          {firm.name}
-        </Link>
-        </Breadcrumb.Item>
         <Breadcrumb.Item>
-          {lawyer.name}
+          <Link to={`/firms/${firm.id}`}>{firm.name}</Link>
         </Breadcrumb.Item>
+        <Breadcrumb.Item>{lawyer.name}</Breadcrumb.Item>
       </Breadcrumb>
       <div className="site-layout-content">
         <Descriptions title="Lawyer Details">

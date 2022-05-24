@@ -7,6 +7,7 @@ import * as R from "ramda"
 import { v4 as uuidv4 } from "uuid"
 import {
   ADD_FIRM,
+  ADD_LAWYER,
   BOOK_LAWYER_SLOTS,
   DELETE_FIRM,
   FORMAT_DATA,
@@ -37,6 +38,25 @@ const updateLawerInFirm = (state, payload) => {
   )
 
   cloneState[firmIndex] = { ...cloneFirm, lawyers: cloneLawyers }
+
+  return cloneState
+}
+
+const addLawyerToFirm = (state, payload) => {
+  const { firmId, lawyer } = payload
+
+  const cloneState = R.clone(state)
+  console.log(firmId, "firmId")
+  const firmIndex = getIndexFromId(cloneState, firmId)
+
+  const cloneFirm = R.clone(cloneState[firmIndex])
+
+  console.log(cloneFirm, "cloneFirm")
+  cloneFirm.lawyers = [
+    ...cloneFirm.lawyers,
+    { ...lawyer, id: uuidv4(), slots: [] },
+  ]
+  cloneState[firmIndex] = { ...cloneFirm, formattedData: false }
 
   return cloneState
 }
@@ -74,8 +94,8 @@ const initialLawyerData = [
     name: "Lawyer-Name-2",
     speciality: ["Lawyer-2-Speciality-1", "Lawyer-2-Speciality-2"],
     availablity: {
-      startTime: "14",
-      endTime: "17",
+      startTime: 14,
+      endTime: 17,
     },
     slots: [],
     cost: 500,
@@ -95,6 +115,8 @@ const rootReducer = (state = initialFirmData, action = {}) => {
   switch (action.type) {
     case ADD_FIRM:
       return [...state, getBaseFirmData(action.payload)]
+    case ADD_LAWYER:
+      return addLawyerToFirm(state, action.payload)
     case DELETE_FIRM:
       return state.filter((firm) => firm.id !== action.payload.id)
     case BOOK_LAWYER_SLOTS:

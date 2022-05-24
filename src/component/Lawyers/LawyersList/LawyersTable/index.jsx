@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams, useNavigate } from "react-router-dom"
 import { formatLawyersData, getDataFromId } from "@/component/utils"
+import "./LawyersTable.css"
 
 function LawyersTable() {
   const { firmId } = useParams()
@@ -95,6 +96,7 @@ function LawyersTable() {
 
   return (
     <Table
+      rowClassName={() => "table-row"}
       onRow={(record) => ({
         onClick: () => {
           navigate(`/firms/${firmId}/lawyers/${record.id}`)

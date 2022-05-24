@@ -1,5 +1,10 @@
 import { toast } from "react-toastify"
-import { ADD_FIRM, BOOK_LAWYER_SLOTS, DELETE_FIRM } from "../constants"
+import {
+  ADD_FIRM,
+  BOOK_LAWYER_SLOTS,
+  DELETE_FIRM,
+  ADD_LAWYER,
+} from "../constants"
 
 export const addFirm =
   (firm, cb = () => {}) =>
@@ -9,6 +14,18 @@ export const addFirm =
       payload: firm,
     })
     toast.success("Firm added successfully")
+    cb()
+  }
+
+export const addLawyer =
+  (firmId, lawyer, cb = () => {}) =>
+  (dispatch) => {
+    console.log("inside")
+    dispatch({
+      type: ADD_LAWYER,
+      payload: { lawyer, firmId },
+    })
+    toast.success("Lawyer added successfully")
     cb()
   }
 
